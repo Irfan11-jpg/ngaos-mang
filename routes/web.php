@@ -3,6 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController; // Tambahan untuk memanggil Controller kita
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HafalanController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/hafalan', [HafalanController::class, 'store'])->name('hafalan.store');
+});
 
 Route::get('/', function () {
     return view('welcome');
