@@ -6,27 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('hafalans', function (Blueprint $table) {
+        Schema::create('hafalan', function (Blueprint $table) {
             $table->id();
-            // Menghubungkan hafalan ini ke user (santri)
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); 
-            $table->string('surah');
-            $table->string('ayat');
-            $table->string('status'); // Contoh status: 'Lancar', 'Perlu Diulang'
+            $table->foreignId('santri_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('guru_id')->constrained('users')->onDelete('cascade');
+            $table->integer('nomor_surah');
+            $table->string('nama_surah');
+            $table->integer('ayat_mulai');
+            $table->integer('ayat_selesai');
+            $table->enum('status', ['belum', 'proses', 'selesai'])->default('belum');
+            $table->enum('nilai_hafalan', ['A', 'B', 'C', 'D'])->nullable();
+            $table->text('catatan')->nullable();
+            $table->date('tanggal_setor')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('hafalans');
+        Schema::dropIfExists('hafalan');
     }
 };

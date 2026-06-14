@@ -12,7 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Daftarkan nama alias 'role' untuk RoleMiddleware kita (Tambahan Mhs 1)
+        // Daftarkan alias 'role' agar bisa digunakan di routes/web.php
+        // Pastikan nama class ini sama dengan nama file Middleware yang kamu buat
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);

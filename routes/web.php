@@ -1,24 +1,33 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController; // Tambahan untuk memanggil Controller kita
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HafalanController;
+use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth'])->group(function () {
-    Route::post('/hafalan', [HafalanController::class, 'store'])->name('hafalan.store');
-});
-
+// Halaman utama
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Baris ini yang diubah: mengarahkan /dashboard ke DashboardController
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Middleware auth (wajib login)
+Route::middleware(['auth'])->group(function () {
+    
+    // 1. Dashboard Umum (Bisa digunakan untuk redirect otomatis ke dashboard masing-masing)
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+    // 2. Route KHUSUS GURU
+    Route::middleware(['role:guru'])->group(function () {
+        Route::get('/dashboard/guru', [DashboardController::class, 'guruIndex'])->name('dashboard.guru');
+        Route::post('/hafalan', [HafalanController::class, 'store'])->name('hafalan.store');
+    });
+
+    // 3. Route KHUSUS SANTRI
+    Route::middleware(['role:santri'])->group(function () {
+        Route::get('/dashboard/santri', [DashboardController::class, 'santriIndex'])->name('dashboard.santri');
+    });
+
+    // 4. Route Profile (Bisa diakses keduanya)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            // Menambahkan kolom role ke tabel users
-            $table->string('role')->default('santri');
+        Schema::create('absensis', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -22,9 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            // Menghapus kolom role jika migrasi dibatalkan
-            $table->dropColumn('role');
-        });
+        Schema::dropIfExists('absensis');
     }
 };
