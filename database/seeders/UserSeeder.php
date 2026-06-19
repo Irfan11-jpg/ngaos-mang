@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Guru Ngaji',
             'email' => 'guru@ngaos.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('password123'),
             'role' => 'guru',
         ]);
 
@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Santri Pintar',
             'email' => 'santri@ngaos.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('password123'),
             'role' => 'santri',
         ]);
     }

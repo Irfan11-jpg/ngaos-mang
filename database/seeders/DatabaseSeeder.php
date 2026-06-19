@@ -2,29 +2,28 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Buat Guru
-        \App\Models\User::create([
-            'name'     => 'Guru Ngaji',
-            'email'    => 'guru@ngaos.test',
-            'password' => bcrypt('password'),
+        // ✅ USER DUMMY GURU
+        User::create([
+            'name'     => 'Guru Demo',
+            'email'    => 'guru@mengajiyuk.test',
+            'password' => Hash::make('password'),
             'role'     => 'guru',
         ]);
 
-        // Buat 3 Santri
-        $santriList = ['Ahmad Fauzi', 'Siti Aisyah', 'Muhammad Rizki'];
-        foreach ($santriList as $i => $nama) {
-            \App\Models\User::create([
-                'name'     => $nama,
-                'email'    => 'santri' . ($i+1) . '@ngaos.test',
-                'password' => bcrypt('password'),
-                'role'     => 'santri',
-            ]);
-        }
-    }  
-}      
+        // ✅ USER DUMMY SANTRI
+        User::create([
+            'name'     => 'Santri Demo',
+            'email'    => 'santri@mengajiyuk.test',
+            'password' => Hash::make('password'),
+            'role'     => 'santri',
+        ]);
+    }
+}

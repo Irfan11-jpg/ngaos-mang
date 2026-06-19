@@ -4,17 +4,23 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        // Cek apakah user sudah login dan role-nya sesuai dengan yang diminta
-        if (!Auth::check() || Auth::user()->role !== $role) {
-            // Jika bukan haknya, lemparkan kembali ke dashboard utama mereka
-            return redirect('/dashboard');
+        // Kalau belum login, redirect ke halaman login
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        // Kalau role tidak sesuai, redirect ke dashboard sesuai role-nya
+        if (auth()->user()->role !== $role) {
+            if (auth()->user()->role === 'guru') {
+                return redirect()->route('dashboard.guru');
+            }
+            return redirect()->route('dashboard.santri');
         }
 
         return $next($request);
